@@ -6,57 +6,63 @@
     <title>Data Growth Chart</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.1.9/Recharts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.5.0/Recharts.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div id="root"></div>
     <script>
-        // Error handling
         window.onerror = function(message, source, lineno, colno, error) {
             console.error("An error occurred:", message, "at", source, ":", lineno);
             document.getElementById('root').innerHTML = `<p>An error occurred: ${message}</p>`;
         };
 
-        // Logging
         console.log("Script started");
 
-        try {
-            console.log("Recharts available:", !!Recharts);
-            const { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } = Recharts;
+        // Wait for Recharts to load
+        window.onload = function() {
+            try {
+                console.log("Window loaded");
+                if (typeof Recharts === 'undefined') {
+                    throw new Error("Recharts is not defined. The library may not have loaded correctly.");
+                }
+                console.log("Recharts available:", !!Recharts);
 
-            const data = [
-                { year: 2020, zettabytes: 64.2 },
-                { year: 2025, zettabytes: 180.7 }
-            ];
+                const { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } = Recharts;
 
-            const DataGrowthChart = () => React.createElement(
-                'div',
-                { className: 'p-4 bg-gray-100 rounded-lg shadow-md' },
-                React.createElement('h2', { className: 'text-2xl font-bold mb-4 text-center' }, 'Worldwide Data Creation Explosion'),
-                React.createElement(
-                    ResponsiveContainer,
-                    { width: '100%', height: 300 },
+                const data = [
+                    { year: 2020, zettabytes: 64.2 },
+                    { year: 2025, zettabytes: 180.7 }
+                ];
+
+                const DataGrowthChart = () => React.createElement(
+                    'div',
+                    { className: 'p-4 bg-gray-100 rounded-lg shadow-md' },
+                    React.createElement('h2', { className: 'text-2xl font-bold mb-4 text-center' }, 'Worldwide Data Creation Explosion'),
                     React.createElement(
-                        BarChart,
-                        { data: data },
-                        React.createElement(XAxis, { dataKey: 'year' }),
-                        React.createElement(YAxis, { label: { value: 'Zettabytes', angle: -90, position: 'insideLeft' } }),
-                        React.createElement(Tooltip),
-                        React.createElement(Legend),
-                        React.createElement(Bar, { dataKey: 'zettabytes', fill: '#8884d8', name: 'Data Volume' })
-                    )
-                ),
-                React.createElement('p', { className: 'mt-4 text-center text-sm' }, 'Source: Statista')
-            );
+                        ResponsiveContainer,
+                        { width: '100%', height: 300 },
+                        React.createElement(
+                            BarChart,
+                            { data: data },
+                            React.createElement(XAxis, { dataKey: 'year' }),
+                            React.createElement(YAxis, { label: { value: 'Zettabytes', angle: -90, position: 'insideLeft' } }),
+                            React.createElement(Tooltip),
+                            React.createElement(Legend),
+                            React.createElement(Bar, { dataKey: 'zettabytes', fill: '#8884d8', name: 'Data Volume' })
+                        )
+                    ),
+                    React.createElement('p', { className: 'mt-4 text-center text-sm' }, 'Source: Statista')
+                );
 
-            console.log("Rendering chart");
-            ReactDOM.render(React.createElement(DataGrowthChart), document.getElementById('root'));
-            console.log("Chart rendered");
-        } catch (error) {
-            console.error("An error occurred:", error);
-            document.getElementById('root').innerHTML = `<p>An error occurred: ${error.message}</p>`;
-        }
+                console.log("Rendering chart");
+                ReactDOM.render(React.createElement(DataGrowthChart), document.getElementById('root'));
+                console.log("Chart rendered");
+            } catch (error) {
+                console.error("An error occurred:", error);
+                document.getElementById('root').innerHTML = `<p>An error occurred: ${error.message}</p>`;
+            }
+        };
     </script>
 </body>
 </html>
